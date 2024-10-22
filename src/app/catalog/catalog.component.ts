@@ -1,19 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { Product } from './product.model';
 import { productsArray } from './products-data';
+import { ProductsService } from './products.service'; 
+import {  CartService } from '@core/cart.service';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'bot-catalog',
   templateUrl: './catalog.component.html',
   styleUrls: ['./catalog.component.css'],
+  
 })
 export class CatalogComponent {
-  products: Product[] = productsArray;
-  private cart: Product[] = [];
+  products : Observable<Product[]> = this.productsServices.getProducts();
 
-  constructor() { }
+  constructor( private productsServices : ProductsService ,
+    private cartService : CartService ) {
+
+  }
+
+   
 
   addToCart(product: Product) {
-    this.cart.push(product);
+    this.cartService.add(product);
   }
 }
